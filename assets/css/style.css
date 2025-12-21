@@ -37713,19 +37713,18 @@ button.swiper-pagination-bullet {
     }
 }
 
-.nk-section-text {
-    font-size: 16px;
-    margin: 0;
-    color: #64728f;
-    line-height: 1.6
-}
-
 @media(min-width: 768px) {
     .nk-section-text {
         font-size:1.25rem
     }
 }
 
+.nk-section-text {
+    font-size: 16px;
+    margin: 0;
+    color: #64728f;
+    line-height: 1.6
+}
 .nk-section-space {
     padding: 30px 0px
 }
@@ -49113,3 +49112,243 @@ h6,.h6 {
     font-size: 14px;
     line-height: 1.5
 }
+
+.fs-16 ul {
+    list-style: disc;
+    margin: 0;
+    padding: 0 30px;
+}
+
+.alpha-list {
+  list-style-type: lower-alpha !important; /* For a, b, c... */
+}
+
+/* Horizontal Tabs */
+.nk-horizontal-tabs {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+  padding: 0;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.nk-horizontal-tabs li {
+  cursor: pointer;
+  padding-bottom: 12px;
+  font-weight: 500;
+  color: #6b7280;
+  position: relative;
+}
+
+.nk-horizontal-tabs li.active {
+  color: var(--bs-primary);
+}
+
+.nk-horizontal-tabs li.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 2px;
+  background: var(--bs-primary);
+}
+
+/* Tab Content */
+.nk-tab-content {
+  display: none;
+  animation: fadeIn 0.35s ease;
+}
+
+.nk-tab-content.active {
+  display: block;
+}
+
+.tab-img {
+  max-width: 100%;
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+ul.list-styled {
+list-style-type: disc;
+padding: 0 30px;
+}
+
+/* =====================================
+   SOLAR SERVICES PAGE ONLY
+   SAFE – DOES NOT AFFECT OTHER PAGES
+===================================== */
+
+.solar-services-page section {
+  padding: 90px 0;
+}
+
+.solar-services-page section:nth-child(even) {
+  background: #f8fafc;
+}
+
+/* ---------- TYPOGRAPHY ---------- */
+.solar-services-page h1 {
+  font-size: 44px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 20px;
+}
+
+.solar-services-page h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 16px;
+}
+
+.solar-services-page h3 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.solar-services-page p {
+  font-size: 16px;
+  color: #64748b;
+  max-width: 820px;
+  line-height: 1.7;
+}
+
+/* ---------- LISTS ---------- */
+.solar-services-page ul {
+  margin-top: 14px;
+  padding-left: 18px;
+}
+
+.solar-services-page ul li {
+  margin-bottom: 8px;
+  color: #64748b;
+}
+
+/* ---------- CARD LOOK (OFFGRID / ONGRID / COMPONENTS) ---------- */
+.solar-services-page h3,
+.solar-services-page h3 + p,
+.solar-services-page h3 + ul {
+  background: #ffffff;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.solar-services-page h3 {
+  padding-top: 20px;
+}
+
+.solar-services-page h3 + p,
+.solar-services-page h3 + ul {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* ---------- MEGA WATT SECTION ---------- */
+.solar-services-page h2 + p {
+  margin-top: 10px;
+}
+
+/* ---------- CTA SECTION ---------- */
+.solar-services-page section:last-of-type {
+  background: linear-gradient(135deg, #0f172a, #020617);
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.solar-services-page section:last-of-type h2 {
+  color: #ffffff;
+}
+
+.solar-services-page section:last-of-type p {
+  color: #84898f;
+}
+
+/* ---------- BUTTON ---------- */
+.solar-services-page a.btn,
+.solar-services-page button {
+  padding: 14px 30px;
+  border-radius: 999px;
+  font-weight: 600;
+  background: #2e7d32;
+  color: #ffffff;
+  display: inline-block;
+  margin-top: 20px;
+  transition: 0.3s;
+}
+
+.solar-services-page a.btn:hover {
+  background: #256628;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+  .solar-services-page h1 {
+    font-size: 34px;
+  }
+  .solar-services-page h2 {
+    font-size: 26px;
+  }
+  .solar-services-page section {
+    padding: 60px 0;
+  }
+}
+
+/*.active {
+    color: rgb(79, 138, 77);
+}*/
+.auth-note {
+    font-size: 13px;
+    color: #6b7280;
+    text-align: center;
+    margin-top: 12px;
+}
+
+.auth-note a {
+    color: #2563eb;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.auth-note a:hover {
+    text-decoration: none;
+}
+/*.auth-divider {
+    display: flex;
+    align-items: center;
+    margin: 16px 0 10px;
+    color: #9ca3af;
+    font-size: 12px;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #e5e7eb;
+}
+
+.auth-divider span {
+    padding: 0 10px;
+}
+
+.auth-alt-action {
+    text-align: center;
+    font-size: 14px;
+}
+
+.auth-alt-action a {
+    color: #2563eb;
+    font-weight: 500;
+    cursor: pointer;
+}*/
+
