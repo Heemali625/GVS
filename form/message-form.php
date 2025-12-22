@@ -4,9 +4,10 @@ header('Content-Type: application/json; charset=utf-8');
 
 // --- config: set your DB credentials here ---
 $db_host = 'localhost';
-$db_user = 'your_db_user';
-$db_pass = 'your_db_password';
-$db_name = 'your_database_name';
+$db_name = 'gvsindia_new_gvs_contact';
+$db_user = 'gvsindia_new_gvs_user';
+$db_pass = 'DL;yfA@NJoWToVZy';
+
 // --------------------------------------------
 
 // Basic response helper
