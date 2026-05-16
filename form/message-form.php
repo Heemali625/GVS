@@ -1,86 +1,131 @@
 <?php
-// message-form.php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require __DIR__ . "/PHPMailer-master/src/PHPMailer.php";
+require __DIR__ . "/PHPMailer-master/src/SMTP.php";
+require __DIR__ . "/PHPMailer-master/src/Exception.php";
+
 header('Content-Type: application/json; charset=utf-8');
 
-// --- config: set your DB credentials here ---
+/* =======================
+   DATABASE CONFIG
+======================= */
 $db_host = 'localhost';
 $db_name = 'gvsindia_new_gvs_contact';
 $db_user = 'gvsindia_new_gvs_user';
 $db_pass = 'DL;yfA@NJoWToVZy';
 
-// --------------------------------------------
-
-// Basic response helper
-function resp($ok, $msg) {
-    echo json_encode(['success' => $ok, 'message' => $msg]);
+/* =======================
+   RESPONSE HELPER
+======================= */
+function respond($ok, $msg) {
+    echo json_encode([
+        'success' => $ok,
+        'message' => $msg
+    ]);
     exit;
 }
 
-// Only allow POST
+/* =======================
+   ONLY POST
+======================= */
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    resp(false, 'Invalid request method.');
+    respond(false, 'Invalid request.');
 }
 
-// Simple rate limit using session (basic)
+/* =======================
+   RATE LIMIT
+======================= */
 session_start();
-if (!isset($_SESSION['last_contact'])) $_SESSION['last_contact'] = 0;
-if (time() - $_SESSION['last_contact'] < 5) { // 5s throttle
-    resp(false, 'Please wait a moment before sending again.');
+$_SESSION['last_contact'] ??= 0;
+if (time() - $_SESSION['last_contact'] < 5) {
+    respond(false, 'Please wait before sending again.');
 }
 
-// get raw POST values
-$name = isset($_POST['user-name']) ? trim($_POST['user-name']) : '';
-$email = isset($_POST['user-email']) ? trim($_POST['user-email']) : '';
-$phone = isset($_POST['user-phone']) ? trim($_POST['user-phone']) : '';
-$message = isset($_POST['user-message']) ? trim($_POST['user-message']) : '';
-$honeypot = isset($_POST['hp_field']) ? trim($_POST['hp_field']) : ''; // honeypot
+/* =======================
+   INPUT
+======================= */
+$name    = trim($_POST['user-name'] ?? '');
+$email   = trim($_POST['user-email'] ?? '');
+$phone   = trim($_POST['user-phone'] ?? '');
+$message = trim($_POST['user-message'] ?? '');
+$honeypot = trim($_POST['hp_field'] ?? '');
 
-// Basic validation
-if ($honeypot !== '') {
-    // bot detected
-    resp(false, 'Spam detected.');
-}
-if ($name === '' || $email === '' || $message === '') {
-    resp(false, 'Please complete all required fields.');
-}
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    resp(false, 'Invalid email address.');
-}
-if (mb_strlen($message) > 5000) {
-    resp(false, 'Message too long.');
-}
+if ($honeypot !== '') respond(false, 'Spam detected.');
+if (!$name || !$email || !$message) respond(false, 'All required fields missing.');
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) respond(false, 'Invalid email.');
 
-// store client ip
 $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
 
-// connect to DB (mysqli)
-$mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-if ($mysqli->connect_errno) {
-    error_log('DB connect error: ' . $mysqli->connect_error);
-    resp(false, 'Database connection failed.');
+/* =======================
+   DB SAVE
+======================= */
+$conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
+if ($conn->connect_error) {
+    respond(false, 'Database connection failed.');
 }
-$mysqli->set_charset('utf8mb4');
+$conn->set_charset('utf8mb4');
 
-// insert using prepared statement
-$stmt = $mysqli->prepare("INSERT INTO contact_messages (name, email, phone, message, ip) VALUES (?, ?, ?, ?, ?)");
-if (!$stmt) {
-    error_log('Prepare failed: ' . $mysqli->error);
-    resp(false, 'Database error (prepare).');
+$stmt = $conn->prepare(
+    "INSERT INTO new_gvs_contact_message 
+     (name, email, phone, message, ip) 
+     VALUES (?, ?, ?, ?, ?)"
+);
+
+if (!$stmt) respond(false, 'Database error (prepare).');
+
+$stmt->bind_param("sssss", $name, $email, $phone, $message, $ip);
+
+if (!$stmt->execute()) {
+    respond(false, 'Database error (execute).');
 }
-$stmt->bind_param('sssss', $name, $email, $phone, $message, $ip);
-$ok = $stmt->execute();
-if (!$ok) {
-    error_log('Execute failed: ' . $stmt->error);
-    resp(false, 'Database error (execute).');
-}
-$insertId = $stmt->insert_id;
+
 $stmt->close();
-$mysqli->close();
-
-// optional: send admin email (uncomment and configure if desired)
-// mail('you@yourdomain.com', 'New contact message', "Name: $name\nEmail: $email\nPhone: $phone\n\n$message");
-
-// update session throttle
+$conn->close();
 $_SESSION['last_contact'] = time();
 
-resp(true, 'Message sent. We will contact you shortly.');
+/* =======================
+   EMAIL (PHPMailer)
+======================= */
+$mail = new PHPMailer(true);
+
+try {
+    $mail->isSMTP();
+    $mail->Host       = 'smtp.gmail.com';
+    $mail->SMTPAuth   = true;
+    $mail->Username   = 'rautheemali04@gmail.com';
+    $mail->Password   = 'drqp wrjm tnif wwou'; // App password
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port       = 587;
+
+    $mail->setFrom('rautheemali04@gmail.com', 'GVS Website');
+    $mail->addAddress('rautheemali04@gmail.com');
+    $mail->addReplyTo($email, $name);
+
+    $mail->Subject = 'New Contact Form Submission';
+    $mail->Body = "
+New contact form submission:
+
+Name: $name
+Email: $email
+Phone: $phone
+
+Message:
+$message
+
+IP: $ip
+";
+
+    $mail->send();
+
+} catch (Exception $e) {
+    // Log email error but DO NOT fail user
+    error_log("Contact mail failed: " . $mail->ErrorInfo);
+}
+
+/* =======================
+   FINAL RESPONSE
+======================= */
+respond(true, 'Message sent successfully. We will contact you shortly.');
+  

@@ -95,7 +95,8 @@
             <div class="col-lg-8" data-aos="fade-up" data-aos-delay="0">
               <div class="card rounded-2">
                 <div class="card-body">
-                  <form data-action="form/message-form.php" method="post" class="form-submit-init">
+                  <form id="contact-form" method="post" action="/GVS-New/GVS/form/message-form.php"
+                    data-action="/GVS-New/GVS/form/message-form.php">
                     <!-- put this inside the <form> -->
                     <input type="text" name="hp_field" id="hp_field" value="" style="display: none"
                       autocomplete="off" />
@@ -311,7 +312,7 @@
   <script>
     // Ajax submit for the contact form (uses the form's data-action attribute)
     (function () {
-      const form = document.querySelector("form.form-submit-init");
+      const form = document.getElementById('contact-form');
       if (!form) return;
 
       const submitBtn = document.getElementById("submit-btn");
@@ -353,9 +354,6 @@
             method: "POST",
             body: formData,
             credentials: "same-origin",
-            headers: {
-              Accept: "application/json",
-            },
           });
 
           if (!res.ok) {

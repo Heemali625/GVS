@@ -8,6 +8,96 @@
     <link rel="shortcut icon" href="images/favicon.png" />
     <title>81-MM MORTAR FIRING SIMULATOR - Green Vision Solutions.</title>
     <link rel="stylesheet" href="../assets/css/style.css?v1.5.0" />
+    <style>
+        .request-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 95, 0);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .request-card {
+            width: 420px;
+            max-width: 92%;
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: pop 0.25s ease;
+        }
+
+        @keyframes pop {
+            from {
+                transform: scale(.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .request-card h3 {
+            margin: 0 0 6px;
+            font-size: 20px;
+        }
+
+        .request-card .sub {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        .request-card input,
+        .request-card textarea {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .request-card textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .request-card button[type="submit"] {
+            width: 100%;
+            padding: 11px;
+            background: #0d6efd;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .request-close {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        #request-msg {
+            margin-top: 12px;
+            font-size: 14px;
+            text-align: center;
+        }
+    </style>
+
+
 </head>
 
 <body class="nk-body" data-navbar-collapse="xl">
@@ -349,8 +439,8 @@
                                                         +91 40 - 27124465 </span></a></li>
                                             <li class="col-12"><a href="https://www.google.com/maps" target="_blank"
                                                     class="nk-footer-text d-flex align-items-center gap-1"><em
-                                                        class="icon fs-14 ni ni-map-pin"></em><span
-                                                        class=""> A – 305, Varun Enclave, Bhavani Nagar,
+                                                        class="icon fs-14 ni ni-map-pin"></em><span class=""> A – 305,
+                                                        Varun Enclave, Bhavani Nagar,
                                                         Kapra, ECIL, Hyderabad, Telangana - 500 062.
                                                     </span></a></li>
                                         </ul>
@@ -467,76 +557,181 @@
 
         </div>
     </div>
+    <!-- Request Access Modal -->
+    <!-- Request Access Modal -->
+    <div id="request-overlay" class="request-overlay">
+        <div class="request-card">
+            <button class="request-close">&times;</button>
 
-    <script>
-        window.onload = function () {
+            <h3>Request Access</h3>
+            <p class="sub">Fill the details below. Our team will contact you.</p>
 
-            console.log("[AUTH] window loaded — starting auth script");
+            <form id="request-access-form">
+                <input type="text" name="name" placeholder="Full Name" required />
+                <input type="email" name="email" placeholder="Email" required />
+                <input type="text" name="phone" placeholder="Phone" />
+                <input type="text" name="organization" placeholder="Organization" />
+                <textarea name="message" placeholder="Purpose of access" required></textarea>
 
-            const overlay = document.getElementById('auth-overlay');
-            const inputUser = document.getElementById('auth-username');
-            const inputPass = document.getElementById('auth-password');
-            const btn = document.getElementById('auth-submit');
-            const err = document.getElementById('auth-error');
+                <button type="submit">Submit Request</button>
+                <div id="request-msg"></div>
+            </form>
 
-            if (!overlay || !inputUser || !inputPass || !btn) {
-                console.log("[AUTH] Missing elements, stopping.");
+        </div>
+    </div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* ===============================
+       ELEMENTS
+    =============================== */
+    const authOverlay    = document.getElementById("auth-overlay");
+    const inputUser      = document.getElementById("auth-username");
+    const inputPass      = document.getElementById("auth-password");
+    const loginBtn       = document.getElementById("auth-submit");
+    const authError      = document.getElementById("auth-error");
+    const requestBtn     = document.getElementById("request-access-btn");
+
+    const requestOverlay = document.getElementById("request-overlay");
+    const requestClose   = document.querySelector(".request-close");
+    const form           = document.getElementById("request-access-form");
+    const msgBox         = document.getElementById("request-msg");
+
+    /* ===============================
+       AUTH CONFIG
+    =============================== */
+    const ALLOWED_USERNAME = "admin";
+    const STORED_PASS_HASH =
+        "fcf7bb6d546cfb82d2e55486984ae7a1862a666acb441e0cf8b4ed34a4fcf9d7";
+
+    /* ===============================
+       HELPERS
+    =============================== */
+    function showAuthError(msg) {
+        if (!authError) return;
+        authError.textContent = msg;
+        setTimeout(() => authError.textContent = "", 3000);
+    }
+
+    async function hashSHA256(str) {
+        const enc = new TextEncoder();
+        const digest = await crypto.subtle.digest("SHA-256", enc.encode(str));
+        return Array.from(new Uint8Array(digest))
+            .map(b => b.toString(16).padStart(2, "0"))
+            .join("");
+    }
+
+    function isLoggedIn() {
+        return !!sessionStorage.getItem("authed_user");
+    }
+
+    /* ===============================
+       INITIAL STATE
+    =============================== */
+    if (authOverlay && !isLoggedIn()) {
+        authOverlay.style.display = "flex";
+    } else if (authOverlay) {
+        authOverlay.style.display = "none";
+    }
+
+    /* ===============================
+       LOGIN
+    =============================== */
+    if (loginBtn) {
+        loginBtn.addEventListener("click", async function () {
+            const u = inputUser?.value.trim();
+            const p = inputPass?.value;
+
+            if (!u || !p) {
+                showAuthError("Enter username & password");
                 return;
             }
 
-            const ALLOWED_USERNAME = 'admin';
-            const STORED_PASS_HASH = 'fcf7bb6d546cfb82d2e55486984ae7a1862a666acb441e0cf8b4ed34a4fcf9d7';
+            const hash = await hashSHA256(p);
 
-            function showErr(msg) {
-                err.textContent = msg;
-                setTimeout(() => err.textContent = "", 3000);
+            if (u === ALLOWED_USERNAME && hash === STORED_PASS_HASH) {
+                sessionStorage.setItem("authed_user", u);
+                authOverlay.style.display = "none";
+            } else {
+                showAuthError("Invalid credentials");
             }
+        });
+    }
 
-            function hex(buffer) {
-                const view = new DataView(buffer);
-                let h = '';
-                for (let i = 0; i < view.byteLength; i += 4) {
-                    h += ('00000000' + view.getUint32(i).toString(16)).slice(-8);
+    /* ===============================
+       OPEN REQUEST ACCESS
+    =============================== */
+    if (requestBtn && requestOverlay && authOverlay) {
+        requestBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            authOverlay.style.display = "none";
+            requestOverlay.style.display = "flex";
+        });
+    }
+
+    /* ===============================
+       CLOSE REQUEST ACCESS
+       (SECURE FIX)
+    =============================== */
+    if (requestClose && requestOverlay) {
+        requestClose.addEventListener("click", function () {
+            requestOverlay.style.display = "none";
+
+            // 🔐 If NOT logged in, restore auth overlay
+            if (!isLoggedIn() && authOverlay) {
+                authOverlay.style.display = "flex";
+            }
+        });
+    }
+
+    /* ===============================
+       REQUEST ACCESS SUBMIT
+    =============================== */
+    if (form && msgBox) {
+        form.addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            msgBox.textContent = "Submitting...";
+            msgBox.style.color = "#333";
+
+            try {
+                const res = await fetch("../form/request-access.php", {
+                    method: "POST",
+                    body: new FormData(form)
+                });
+
+                const text = await res.text();
+                let data;
+
+                try {
+                    data = JSON.parse(text);
+                } catch {
+                    throw new Error("Invalid JSON response");
                 }
-                return h;
-            }
 
-            async function hashSHA256(str) {
-                const enc = new TextEncoder();
-                const digest = await crypto.subtle.digest("SHA-256", enc.encode(str));
-                return hex(digest);
-            }
-
-            async function tryLogin() {
-                console.log("[AUTH] Login attempt");
-
-                const u = inputUser.value.trim();
-                const p = inputPass.value;
-
-                if (!u || !p) {
-                    showErr("Enter username & password");
-                    return;
-                }
-
-                const hash = await hashSHA256(p);
-                console.log("[AUTH] Computed hash:", hash);
-
-                if (u === ALLOWED_USERNAME && hash === STORED_PASS_HASH) {
-                    console.log("[AUTH] Login success!");
-                    sessionStorage.setItem("authed_user", u);
-                    overlay.style.display = "none";
+                if (data.success) {
+                    msgBox.style.color = "green";
+                    msgBox.textContent = data.message;
+                    form.reset();
                 } else {
-                    console.log("[AUTH] Invalid credentials");
-                    showErr("Invalid credentials");
+                    msgBox.style.color = "red";
+                    msgBox.textContent = data.message;
                 }
+
+            } catch (err) {
+                console.error(err);
+                msgBox.style.color = "red";
+                msgBox.textContent = "Server error. Please try again.";
             }
+        });
+    }
 
-            btn.addEventListener("click", tryLogin);
+});
+</script>
 
-            console.log("[AUTH] Auth initialized");
 
-        };
-    </script>
 
 
     <!-- END: Simple client-side login overlay -->
