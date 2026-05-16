@@ -8,6 +8,763 @@
     <link rel="shortcut icon" href="images/favicon.png" />
     <title>About Us - Green Vision Solutions.</title>
     <link rel="stylesheet" href="../assets/css/style.css?v1.5.0" />
+    <style>
+        .defence-capabilities {
+            --dc-panel: rgba(255, 255, 255, 0.055);
+            --dc-panel-strong: rgba(255, 255, 255, 0.08);
+            --dc-border: rgba(255, 255, 255, 0.12);
+            --dc-accent: #78b56f;
+            --dc-text: #f7fbff;
+            --dc-muted: rgba(229, 236, 246, 0.74);
+            background:
+                radial-gradient(circle at 82% 10%, rgba(79, 138, 77, 0.2), transparent 28%),
+                linear-gradient(135deg, #08111f 0%, #0b1830 54%, #091322 100%);
+            color: var(--dc-text);
+            overflow: hidden;
+        }
+
+        .defence-capabilities::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+            background-size: 44px 44px;
+            opacity: 0.28;
+            pointer-events: none;
+        }
+
+        .defence-capabilities .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .defence-capabilities .nk-section-subtitle {
+            color: var(--dc-accent);
+            letter-spacing: 0.14em;
+        }
+
+        .defence-capabilities .nk-section-title {
+            color: var(--dc-text);
+            margin-bottom: 16px;
+        }
+
+        .defence-capabilities .nk-section-text {
+            color: var(--dc-muted);
+            max-width: 760px;
+        }
+
+        .dc-block + .dc-block {
+            margin-top: 48px;
+        }
+
+        .dc-block-title {
+            color: var(--dc-text);
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .dc-showcase {
+            display: grid;
+            gap: 18px;
+            grid-template-columns: minmax(0, 1.4fr) minmax(320px, 0.8fr);
+        }
+
+        .dc-feature {
+            min-height: 360px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid var(--dc-border);
+            border-radius: 0.9rem;
+            background:
+                linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.035)),
+                radial-gradient(circle at top right, rgba(120, 181, 111, .16), transparent 34%);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 220ms ease, transform 220ms ease, box-shadow 220ms ease;
+        }
+
+        .dc-feature::after {
+            content: "";
+            position: absolute;
+            right: -30px;
+            bottom: -30px;
+            width: 180px;
+            height: 180px;
+            border: 1px solid rgba(120, 181, 111, .16);
+            border-radius: 50%;
+        }
+
+        .dc-feature:hover,
+        .dc-story:hover,
+        .dc-capability:hover {
+            border-color: rgba(120, 181, 111, 0.42);
+            box-shadow: 0 18px 42px rgba(0, 0, 0, 0.26);
+            transform: translateY(-4px);
+        }
+
+        .dc-kicker {
+            color: var(--dc-accent);
+            font-size: .78rem;
+            font-weight: 600;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+        }
+
+        .dc-feature h3 {
+            color: var(--dc-text);
+            font-size: clamp(1.45rem, 2vw, 1.9rem);
+            line-height: 1.15;
+            margin: 14px 0 14px;
+        }
+
+        .dc-feature p {
+            color: var(--dc-muted);
+            line-height: 1.7;
+            margin: 0;
+            max-width: 560px;
+        }
+
+        .dc-feature-meta {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+
+        .dc-feature-meta span {
+            border: 1px solid var(--dc-border);
+            border-radius: 999px;
+            color: var(--dc-muted);
+            font-size: .78rem;
+            padding: 8px 12px;
+            background: rgba(255,255,255,.035);
+        }
+
+        .dc-stack {
+            display: grid;
+            gap: 18px;
+        }
+
+        .dc-story {
+            min-height: 171px;
+            border: 1px solid var(--dc-border);
+            border-radius: 0.9rem;
+            background: linear-gradient(180deg, var(--dc-panel-strong), var(--dc-panel));
+            padding: 22px;
+            transition: border-color 220ms ease, transform 220ms ease, box-shadow 220ms ease;
+        }
+
+        .dc-story h3,
+        .dc-capability h3 {
+            color: var(--dc-text);
+            font-size: 1.08rem;
+            line-height: 1.35;
+            margin: 12px 0 10px;
+        }
+
+        .dc-story p,
+        .dc-capability p {
+            color: var(--dc-muted);
+            font-size: .95rem;
+            line-height: 1.65;
+            margin: 0;
+        }
+
+        .dc-timeline {
+            display: grid;
+            gap: 16px;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            position: relative;
+        }
+
+        .dc-timeline::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 18px;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(120,181,111,.55), rgba(255,255,255,.12));
+        }
+
+        .dc-milestone {
+            position: relative;
+            padding-top: 38px;
+        }
+
+        .dc-milestone::before {
+            content: "";
+            position: absolute;
+            top: 11px;
+            left: 0;
+            width: 14px;
+            height: 14px;
+            border: 2px solid var(--dc-accent);
+            border-radius: 50%;
+            background: #0a1526;
+        }
+
+        .dc-milestone strong {
+            color: var(--dc-text);
+            display: block;
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .dc-milestone span {
+            color: var(--dc-muted);
+            display: block;
+            font-size: .92rem;
+            line-height: 1.55;
+        }
+
+        .dc-grid-expertise {
+            display: grid;
+            gap: 18px;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .dc-capability {
+            min-height: 100%;
+            border: 1px solid var(--dc-border);
+            border-radius: .9rem;
+            background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+            padding: 22px;
+            transition: border-color 220ms ease, transform 220ms ease, box-shadow 220ms ease;
+        }
+
+        .dc-icon {
+            align-items: center;
+            border: 1px solid rgba(120, 181, 111, 0.28);
+            border-radius: 999px;
+            background: rgba(120, 181, 111, 0.12);
+            color: var(--dc-accent);
+            display: inline-flex;
+            height: 44px;
+            justify-content: center;
+            width: 44px;
+        }
+
+        .dc-icon svg {
+            height: 22px;
+            width: 22px;
+        }
+
+        .dc-reveal {
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 500ms ease, transform 500ms ease;
+        }
+
+        .dc-reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 991.98px) {
+            .dc-showcase,
+            .dc-timeline,
+            .dc-grid-expertise {
+                grid-template-columns: 1fr;
+            }
+
+            .dc-feature {
+                min-height: auto;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .dc-grid-expertise {
+                grid-template-columns: 1fr;
+            }
+
+            .dc-feature,
+            .dc-story,
+            .dc-capability {
+                padding: 20px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .dc-feature,
+            .dc-story,
+            .dc-capability,
+            .dc-reveal {
+                transition: none;
+            }
+        }
+
+        .mission-vision {
+            position: relative;
+            background:
+                linear-gradient(180deg, #fbfcfd 0%, #fff 100%);
+        }
+
+        .mission-vision::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: min(1100px, calc(100% - 32px));
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(79, 138, 77, .22), transparent);
+            transform: translateX(-50%);
+        }
+
+        .mission-vision-wrap {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: minmax(320px, .82fr) minmax(0, 1.18fr);
+            align-items: stretch;
+        }
+
+        .mission-vision-card {
+            height: 100%;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.9rem;
+            background: linear-gradient(180deg, #fff, #fcfdfc);
+            padding: 28px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color .22s ease, box-shadow .22s ease, transform .22s ease;
+        }
+
+        .mission-vision-card.is-mission {
+            display: flex;
+            min-height: 100%;
+            align-items: flex-end;
+            background:
+                radial-gradient(circle at 85% 12%, rgba(79, 138, 77, .14), transparent 30%),
+                linear-gradient(180deg, #fff, #f8fbf8);
+        }
+
+        .mission-vision-card.is-mission::after {
+            content: "";
+            position: absolute;
+            top: 28px;
+            right: 28px;
+            width: 132px;
+            height: 132px;
+            border: 1px solid rgba(79, 138, 77, .12);
+            border-radius: 50%;
+            background:
+                radial-gradient(circle, rgba(79, 138, 77, .08) 0 34%, transparent 35%),
+                linear-gradient(90deg, transparent 49%, rgba(79, 138, 77, .12) 50%, transparent 51%),
+                linear-gradient(0deg, transparent 49%, rgba(79, 138, 77, .12) 50%, transparent 51%);
+            opacity: .9;
+        }
+
+        .mission-vision-card.is-mission .nk-section-head {
+            max-width: 92%;
+        }
+
+        .mission-vision-card.is-vision {
+            background:
+                linear-gradient(180deg, #fff, #fcfdfc);
+        }
+
+        .mission-vision-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #4f8a4d, rgba(79, 138, 77, 0.08));
+        }
+
+        .mission-vision-card:hover {
+            border-color: rgba(79, 138, 77, .24);
+            box-shadow: 0 18px 42px rgba(10, 20, 37, .08);
+            transform: translateY(-4px);
+        }
+
+        .mission-vision-card .nk-section-head {
+            padding-bottom: 0;
+        }
+
+        .mission-vision-card .nk-section-text {
+            line-height: 1.75;
+        }
+
+        .mission-vision-card.is-mission .nk-section-text {
+            font-size: 1.08rem;
+        }
+
+        .mission-pillars {
+            display: grid;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .mission-pillar {
+            border-top: 1px solid #e8eeea;
+            padding-top: 12px;
+        }
+
+        .mission-pillar strong {
+            color: #0a1425;
+            display: block;
+            font-size: .96rem;
+            margin-bottom: 4px;
+        }
+
+        .mission-pillar span {
+            color: #64728f;
+            display: block;
+            font-size: .92rem;
+            line-height: 1.55;
+        }
+
+        .mission-vision-list {
+            display: grid;
+            gap: 14px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .mission-vision-list li {
+            color: #64728f;
+            line-height: 1.7;
+            padding: 16px 16px 16px 46px;
+            position: relative;
+            border: 1px solid #edf0f2;
+            border-radius: .75rem;
+            background: #fff;
+        }
+
+        .mission-vision-list li::before {
+            align-items: center;
+            background: rgba(79, 138, 77, .1);
+            border-radius: 999px;
+            color: #4f8a4d;
+            content: counter(vision-item, decimal-leading-zero);
+            counter-increment: vision-item;
+            display: inline-flex;
+            font-size: .72rem;
+            font-weight: 600;
+            height: 24px;
+            justify-content: center;
+            position: absolute;
+            top: 18px;
+            left: 14px;
+            width: 24px;
+        }
+
+        .mission-vision-card.is-vision .mission-vision-list {
+            counter-reset: vision-item;
+        }
+
+        @media (max-width: 991.98px) {
+            .mission-vision-wrap {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .mission-vision-card {
+                padding: 22px;
+            }
+        }
+
+        .about-intro {
+            overflow: hidden;
+            position: relative;
+            background:
+                radial-gradient(circle at 88% 18%, rgba(79, 138, 77, 0.1), transparent 26%),
+                linear-gradient(180deg, #fff 0%, #fbfcfd 100%);
+        }
+
+        .about-intro,
+        .defence-capabilities,
+        .mission-vision {
+            padding-top: 56px;
+            padding-bottom: 56px;
+        }
+
+        .core-values,
+        .about-cta {
+            padding-top: 36px;
+            padding-bottom: 36px;
+        }
+
+        .core-values {
+            padding-top: 24px;
+            padding-bottom: 24px;
+        }
+
+        .about-intro {
+            padding-top: 136px !important;
+        }
+
+        @media (min-width: 992px) {
+            .about-intro,
+            .defence-capabilities,
+            .mission-vision {
+                padding-top: 84px;
+                padding-bottom: 84px;
+            }
+
+            .core-values,
+            .about-cta {
+                padding-top: 56px;
+                padding-bottom: 56px;
+            }
+
+            .core-values {
+                padding-top: 36px;
+                padding-bottom: 36px;
+            }
+
+            .about-intro {
+                padding-top: 168px !important;
+            }
+        }
+
+        .about-intro::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            width: min(1100px, calc(100% - 32px));
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(79, 138, 77, .24), transparent);
+            transform: translateX(-50%);
+        }
+
+        .about-intro-grid {
+            gap: 32px 0;
+        }
+
+        .about-intro-media {
+            position: relative;
+            padding: 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 1.15rem;
+            background: #fff;
+            box-shadow: 0 20px 48px rgba(10, 20, 37, .1);
+        }
+
+        .about-intro-media::before {
+            content: "";
+            position: absolute;
+            inset: -1px auto auto -1px;
+            width: 92px;
+            height: 92px;
+            border-top: 2px solid #4f8a4d;
+            border-left: 2px solid #4f8a4d;
+            border-radius: 1.15rem 0 0 0;
+            pointer-events: none;
+        }
+
+        .about-intro-media img {
+            display: block;
+        }
+
+        .about-intro-content {
+            position: relative;
+            padding-left: 28px;
+        }
+
+        .about-intro-content::before {
+            content: "";
+            position: absolute;
+            top: 6px;
+            bottom: 6px;
+            left: 0;
+            width: 1px;
+            background: linear-gradient(180deg, #4f8a4d, rgba(79, 138, 77, .08));
+        }
+
+        .about-intro-content .nk-section-title {
+            margin-bottom: 18px;
+        }
+
+        .about-intro-copy {
+            display: grid;
+            gap: 14px;
+        }
+
+        .about-intro-copy .nk-section-text {
+            line-height: 1.75;
+        }
+
+        @media (max-width: 991.98px) {
+            .about-intro-content {
+                padding-left: 0;
+            }
+
+            .about-intro-content::before {
+                display: none;
+            }
+        }
+
+        .core-values {
+            background: #fff;
+        }
+
+        .core-values-layout {
+            display: grid;
+            gap: 28px;
+            grid-template-columns: minmax(280px, .72fr) minmax(0, 1.28fr);
+            align-items: start;
+        }
+
+        .core-values-intro {
+            position: sticky;
+            top: 120px;
+        }
+
+        .core-values-intro .nk-section-head {
+            padding-bottom: 0;
+        }
+
+        .core-values-grid {
+            display: grid;
+            gap: 18px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .value-card {
+            height: 100%;
+            border: 1px solid #e5e7eb;
+            border-radius: .9rem;
+            background: linear-gradient(180deg, #fff, #fcfdfc);
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color .22s ease, box-shadow .22s ease, transform .22s ease;
+        }
+
+        .value-card::after {
+            content: "";
+            position: absolute;
+            right: -24px;
+            bottom: -24px;
+            width: 92px;
+            height: 92px;
+            border-radius: 50%;
+            background: rgba(79, 138, 77, .06);
+        }
+
+        .value-card:hover {
+            border-color: rgba(79, 138, 77, .24);
+            box-shadow: 0 18px 42px rgba(10, 20, 37, .08);
+            transform: translateY(-4px);
+        }
+
+        .value-card .media {
+            position: relative;
+            z-index: 1;
+        }
+
+        .value-card h5 {
+            margin-bottom: 10px;
+        }
+
+        .value-card .text {
+            line-height: 1.72;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 991.98px) {
+            .core-values-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .core-values-intro {
+                position: static;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .core-values-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .about-cta {
+            position: relative;
+        }
+
+        .about-cta-wrap {
+            isolation: isolate;
+            border: 1px solid rgba(255, 255, 255, .1);
+            border-radius: 1rem;
+            background:
+                radial-gradient(circle at 82% 20%, rgba(79, 138, 77, .28), transparent 28%),
+                linear-gradient(135deg, #0a1425 0%, #122544 100%);
+            overflow: hidden;
+        }
+
+        .about-cta-wrap {
+            padding: 32px;
+        }
+
+        .about-cta-wrap::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            opacity: .3;
+            background-image:
+                linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .about-cta-inner {
+            display: grid;
+            gap: 24px;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: center;
+        }
+
+        .about-cta-copy .nk-section-subtitle {
+            color: rgba(255,255,255,.72);
+            margin-bottom: 14px;
+        }
+
+        .about-cta-copy .nk-section-title {
+            color: #fff;
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+
+        .about-cta-copy p {
+            color: rgba(255,255,255,.72);
+            margin: 0;
+            max-width: 620px;
+        }
+
+        .about-cta-actions {
+            justify-self: end;
+        }
+
+        @media (max-width: 767.98px) {
+            .about-cta-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .about-cta-actions {
+                justify-self: start;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .about-cta-wrap {
+                padding: 48px;
+            }
+        }
+    </style>
 </head>
 
 <body class="nk-body" data-navbar-collapse="xl">
@@ -84,53 +841,55 @@
             </div>
         </header>
         <main class="nk-pages">
-            <section class="nk-section pt-120 pt-lg-160">
+            <section class="nk-section pt-120 pt-lg-160 about-intro">
                 <div class="container">
-                    <div class="row flex-row-reverse justify-content-between align-items-center">
+                    <div class="row flex-row-reverse justify-content-between align-items-center about-intro-grid">
                         <div class="col-lg-5">
-                            <div class="nk-frame mb-5 mb-lg-0 aos-init aos-animate" data-aos="fade-up"
+                            <div class="nk-frame about-intro-media mb-5 mb-lg-0 aos-init aos-animate" data-aos="fade-up"
                                 data-aos-delay="50">
                                 <img src="../images/sample-product.jpg" alt="mission-cover"
                                     class="rounded-16 w-100" />
                             </div>
                         </div>
                         <div class="col-lg-6">
-                            <div class="nk-section-haed pb-0">
+                            <div class="nk-section-haed about-intro-content pb-0">
                                 <span class="nk-section-subtitle">Who We Are</span>
                                 <h2 class="nk-section-title">
                                     <span class="d-inline-block d-lg-block">
                                         we offer complete <span class="text-primary">software development</span></span>
                                     solution.
                                 </h2>
-                                <p class="nk-section-text">
-                                    GVS take great pleasure to introduce ourselves as the pioneers in the arena of IT
-                                    solutions and services & Solar based products (Energy Savers), supply of units and
-                                    its spares and accessories.
-                                </p>
-                                <p class="nk-section-text">GVS is a Hyderabad (India) based Embedded & Web solution
-                                    provider, having team of energetic, dynamic and laborious professionals, each one
-                                    trained in his own specific field. It's where each project is considered a challenge
-                                    and
-                                    is taken up with full commitment and perseverance. At GVS, each and every individual
-                                    employee plays an unparalleled role in making of the imparting the desired services.
-                                    We
-                                    have the experience & expertise to enable complicated business solutions.
-                                </p>
-                                <p class="nk-section-text">At GVS, we offer complete software development consulting
-                                    and training from the Conceptualization, Design, Development, Integration,
-                                    Implementation, Reverse Engineering and Maintenance.
-                                </p>
-                                <p class="nk-section-text">We assist you to gain a competitive edge by continuously
-                                    improving your solutions. GVS is a technology neutral solution provider; we can
-                                    develop
-                                    and integrate solutions across a broad range of technologies. Our great strength
-                                    lies in
-                                    vast experience and extensive expertise in Design, Development, Reverse Engineering
-                                    and
-                                    Testing Services for customers in diverse industry areas. We have a strong
-                                    customer-centric approach that ensures a stable and long-term relationship with our
-                                    Clients.
-                                </p>
+                                <div class="about-intro-copy">
+                                    <p class="nk-section-text">
+                                        GVS take great pleasure to introduce ourselves as the pioneers in the arena of IT
+                                        solutions and services & Solar based products (Energy Savers), supply of units and
+                                        its spares and accessories.
+                                    </p>
+                                    <p class="nk-section-text">GVS is a Hyderabad (India) based Embedded & Web solution
+                                        provider, having team of energetic, dynamic and laborious professionals, each one
+                                        trained in his own specific field. It's where each project is considered a challenge
+                                        and
+                                        is taken up with full commitment and perseverance. At GVS, each and every individual
+                                        employee plays an unparalleled role in making of the imparting the desired services.
+                                        We
+                                        have the experience & expertise to enable complicated business solutions.
+                                    </p>
+                                    <p class="nk-section-text">At GVS, we offer complete software development consulting
+                                        and training from the Conceptualization, Design, Development, Integration,
+                                        Implementation, Reverse Engineering and Maintenance.
+                                    </p>
+                                    <p class="nk-section-text">We assist you to gain a competitive edge by continuously
+                                        improving your solutions. GVS is a technology neutral solution provider; we can
+                                        develop
+                                        and integrate solutions across a broad range of technologies. Our great strength
+                                        lies in
+                                        vast experience and extensive expertise in Design, Development, Reverse Engineering
+                                        and
+                                        Testing Services for customers in diverse industry areas. We have a strong
+                                        customer-centric approach that ensures a stable and long-term relationship with our
+                                        Clients.
+                                    </p>
+                                </div>
 
                             </div>
                         </div>
@@ -138,33 +897,178 @@
                 </div>
             </section>
 
-            <section class="nk-section">
+            <section class="nk-section defence-capabilities">
                 <div class="container">
-                    <div class="row align-items-lg-end justify-content-lg-between gy-5">
-                        <div class="col-lg-6">
-                            <div class="d-flex flex-column" data-aos="fade-up" data-aos-delay="300">
+                    <div class="nk-section-head dc-reveal">
+                        <span class="nk-section-subtitle">Success Stories &amp; Defence Capabilities</span>
+                        <h2 class="nk-section-title">Mission-ready systems built for modern defence training</h2>
+                        <p class="nk-section-text">
+                            A portfolio of delivered simulation systems and defence engineering programs built to improve
+                            readiness, strengthen operator performance, and support mission-critical training environments.
+                        </p>
+                    </div>
 
-                                <div class="nk-section-head pb-0">
+                    <div class="dc-block">
+                        <h3 class="dc-block-title dc-reveal">Featured Defence System Deliveries</h3>
+                        <div class="dc-showcase">
+                            <article class="dc-feature dc-reveal">
+                                <div>
+                                    <span class="dc-kicker">Flagship Delivered System</span>
+                                    <h3>Infantry &amp; Tactical Training Systems</h3>
+                                    <p>
+                                        Field-oriented simulation environments designed to build weapon handling,
+                                        tactical judgement, and repeatable combat readiness under realistic operating conditions.
+                                    </p>
+                                </div>
+                                <div class="dc-feature-meta">
+                                    <span>Mission readiness</span>
+                                    <span>Repeatable drills</span>
+                                    <span>Operational training</span>
+                                </div>
+                            </article>
+
+                            <div class="dc-stack">
+                                <article class="dc-story dc-reveal">
+                                    <span class="dc-kicker">Delivered System</span>
+                                    <h3>Heavy Weapon Simulation</h3>
+                                    <p>Crew-focused training systems for aiming discipline, coordination, and complex weapon operation.</p>
+                                </article>
+
+                                <article class="dc-story dc-reveal">
+                                    <span class="dc-kicker">Delivered System</span>
+                                    <h3>Missile &amp; Surveillance Systems</h3>
+                                    <p>Simulation solutions supporting launcher procedures, target acquisition, and observation-led response.</p>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dc-block">
+                        <h3 class="dc-block-title dc-reveal">Delivered Project Path</h3>
+                        <div class="dc-timeline">
+                            <div class="dc-milestone dc-reveal">
+                                <strong>Infantry &amp; Tactical Training</strong>
+                                <span>Scenario-based systems for weapon drills and tactical decision practice.</span>
+                            </div>
+                            <div class="dc-milestone dc-reveal">
+                                <strong>Heavy Weapon Simulation</strong>
+                                <span>High-fidelity platforms supporting coordinated crew training.</span>
+                            </div>
+                            <div class="dc-milestone dc-reveal">
+                                <strong>Missile &amp; Surveillance Systems</strong>
+                                <span>Integrated training for observation, targeting, and launcher workflows.</span>
+                            </div>
+                            <div class="dc-milestone dc-reveal">
+                                <strong>VR Combat Medical Training</strong>
+                                <span>Immersive casualty-care scenarios for faster and more accurate response.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dc-block">
+                        <h3 class="dc-block-title dc-reveal">Core Capabilities</h3>
+                        <div class="dc-grid-expertise">
+                            <article class="dc-capability dc-reveal">
+                                <span class="dc-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                        <path d="M12 3 4 7v5c0 4.5 3.4 7.8 8 9 4.6-1.2 8-4.5 8-9V7l-8-4Z" />
+                                    </svg>
+                                </span>
+                                <h3>Advanced Military Simulation</h3>
+                                <p>Scenario-driven platforms for realistic, measurable, and repeatable operational training.</p>
+                            </article>
+
+                            <article class="dc-capability dc-reveal">
+                                <span class="dc-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                        <path d="M4 8h16v8H4zM8 8V5h8v3M8 16v3h8v-3M9 12h6" />
+                                    </svg>
+                                </span>
+                                <h3>VR &amp; AR Combat Systems</h3>
+                                <p>Immersive modules that blend digital realism with safe, scalable training delivery.</p>
+                            </article>
+
+                            <article class="dc-capability dc-reveal">
+                                <span class="dc-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                        <path d="M8 4h8v16H8zM4 8h4m8 0h4M4 16h4m8 0h4M10 8h4m-4 4h4m-4 4h4" />
+                                    </svg>
+                                </span>
+                                <h3>Defence Electronics</h3>
+                                <p>Embedded systems, control electronics, and rugged hardware for mission-focused applications.</p>
+                            </article>
+
+                            <article class="dc-capability dc-reveal">
+                                <span class="dc-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                        <path d="M5 5h14v14H5zM9 9h6v6H9zM3 12h2m14 0h2M12 3v2m0 14v2" />
+                                    </svg>
+                                </span>
+                                <h3>Defence Mockups &amp; Integration</h3>
+                                <p>System mockups, subsystem integration, and engineering support from concept to deployment.</p>
+                            </article>
+
+                            <article class="dc-capability dc-reveal">
+                                <span class="dc-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                        <path d="M12 3v18M3 12h18M6 6l12 12M18 6 6 18" />
+                                    </svg>
+                                </span>
+                                <h3>Strategic Defence Projects</h3>
+                                <p>Custom solution development for specialised requirements, critical systems, and long-term programs.</p>
+                            </article>
+
+                            <article class="dc-capability dc-reveal">
+                                <span class="dc-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                        <path d="M12 6v6l4 2M5 7a8 8 0 1 1-1 7" />
+                                        <path d="M5 3v4h4" />
+                                    </svg>
+                                </span>
+                                <h3>AMC &amp; Technical Support</h3>
+                                <p>Lifecycle maintenance, upgrades, and responsive support to keep deployed systems operational.</p>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="nk-section mission-vision">
+                <div class="container">
+                    <div class="mission-vision-wrap">
+                        <div data-aos="fade-up" data-aos-delay="100">
+                            <div class="mission-vision-card is-mission">
+                                <div class="nk-section-head">
                                     <span class="nk-section-subtitle">Mission</span>
                                     <!--<h2 class="nk-section-title">Journey Towards Success</h2>-->
                                     <p class="nk-section-text">
-                                        To emerge as most preferred technological partner and be a potential business
-                                        associate in the field of Software Engineering and Energy efficient services for
-                                        Defense, Public and Private sector by providing cost effective, competitive and
-                                        customized solutions for critical applications on an integrated approach.
+                                        To be a trusted technology partner delivering integrated, cost-effective, and
+                                        customized solutions for critical applications across Defence, Public, and
+                                        Private sectors.
                                     </p>
-
+                                    <div class="mission-pillars">
+                                        <div class="mission-pillar">
+                                            <strong>Technology Partnership</strong>
+                                            <span>Long-term collaboration built around dependable engineering support.</span>
+                                        </div>
+                                        <div class="mission-pillar">
+                                            <strong>Critical Applications</strong>
+                                            <span>Solutions designed for demanding operational and sector-specific needs.</span>
+                                        </div>
+                                        <div class="mission-pillar">
+                                            <strong>Integrated Delivery</strong>
+                                            <span>Software engineering and energy-efficient services aligned in one approach.</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-xl-5">
-                            <div class="d-flex flex-column" data-aos="fade-up" data-aos-delay="300">
-
-                                <div class="nk-section-head pb-0">
+                        <div data-aos="fade-up" data-aos-delay="180">
+                            <div class="mission-vision-card is-vision">
+                                <div class="nk-section-head">
                                     <span class="nk-section-subtitle">Vision</span>
                                     <!--<h2 class="nk-section-title">How NioLand Started</h2>-->
-                                    <p>
-                                    <ul class="nk-section-text">
+                                    <ul class="mission-vision-list">
                                         <li>To be a major Turnkey and Energy Efficient solution provider for Defense,
                                             Public and Private Sectors</li>
                                         <li>To develop cutting edge end-to-end solutions by innovative design and
@@ -173,18 +1077,17 @@
                                             Industrial applications</li>
                                         <li>To keep value of our customers, time and Employees</li>
                                     </ul>
-                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
-            <section class="nk-section">
+            <section class="nk-section core-values">
                 <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-8 col-xxl-6">
-                            <div class="nk-section-head text-center">
+                    <div class="core-values-layout">
+                        <div class="core-values-intro">
+                            <div class="nk-section-head">
                                 <span class="nk-section-subtitle">our values</span>
                                 <div>
                                     <h2 class="nk-section-title">Core Values we define</h2>
@@ -195,11 +1098,9 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row gy-5">
-                        <div class="col-md-6 col-lg-6" data-aos="fade-up" data-aos-delay="0">
-                            <div class="card">
-                                <div class="card-body">
+                        <div class="core-values-grid">
+                        <div data-aos="fade-up" data-aos-delay="0">
+                            <div class="value-card">
                                     <div class="media media-lg media-middle media-circle text-bg-primary-soft mb-4">
                                         <em class="icon ni ni-file-text-fill"></em>
                                     </div>
@@ -211,12 +1112,10 @@
                                         providing quality services. We are continuously seeking ways to deliver higher
                                         value to our customers.
                                     </p>
-                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6 col-lg-6" data-aos="fade-up" data-aos-delay="0">
-                            <div class="card">
-                                <div class="card-body">
+                        <div data-aos="fade-up" data-aos-delay="40">
+                            <div class="value-card">
                                     <div class="media media-lg media-middle media-circle text-bg-danger-soft mb-4">
                                         <em class="icon ni ni-users-fill"></em>
                                     </div>
@@ -228,12 +1127,10 @@
                                         the whole much greater than its parts. As a team, we work together toward a
                                         common vision.
                                     </p>
-                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6 col-lg-6" data-aos="fade-up" data-aos-delay="50">
-                            <div class="card">
-                                <div class="card-body">
+                        <div data-aos="fade-up" data-aos-delay="80">
+                            <div class="value-card">
                                     <div class="media media-lg media-middle media-circle text-bg-info-soft mb-4">
                                         <em class="icon ni ni-gift"></em>
                                     </div>
@@ -244,14 +1141,12 @@
                                         strive towards fanatical attention to consistency and detail, and constantly
                                         look for opportunities to serve our customers better.
                                     </p>
-                                </div>
                             </div>
                         </div>
 
 
-                        <div class="col-md-6 col-lg-6" data-aos="fade-up" data-aos-delay="50">
-                            <div class="card">
-                                <div class="card-body">
+                        <div data-aos="fade-up" data-aos-delay="120">
+                            <div class="value-card">
                                     <div class="media media-lg media-middle media-circle text-bg-primary-soft mb-4">
                                         <em class="icon ni ni-bulb-fill"></em>
                                     </div>
@@ -262,35 +1157,30 @@
                                         matter what the cost. We believe in fairness, transparency and honesty. Without
                                         integrity, we have nothing…
                                     </p>
-                                </div>
                             </div>
                         </div>
-
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <section class="nk-section">
+            <section class="nk-section about-cta">
                 <div class="container">
-                    <div
-                        class="position-relative nk-cta-wrap bg-dark rounded-16 is-theme p-4 p-md-7 py-6 py-md-7 overflow-hidden">
-                        <div class="nk-mask z-1 shape-22 aos-init aos-animate" data-aos="fade-in" data-aos-delay="0">
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-xxl-7">
-                                <div class="nk-section-head pb-0 text-center">
-
-                                    <h2 class="nk-section-title mb-0 aos-init aos-animate" data-aos="fade-up"
-                                        data-aos-delay="50">
-                                        We are trusted by 5k+ clients. <br class="d-none d-lg-block" />
-                                        Join them to grow your business.
-                                    </h2>
-                                    <ul class="nk-btn-group pt-5 justify-content-center aos-init aos-animate"
-                                        data-aos="fade-up" data-aos-delay="100">
-                                        <li><a href="../contact/default.html" class="btn btn-primary">Get In Touch</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                    <div class="about-cta-wrap position-relative">
+                        <div class="about-cta-inner">
+                            <div class="about-cta-copy" data-aos="fade-up" data-aos-delay="0">
+                                <span class="nk-section-subtitle">Partner With GVS</span>
+                                <h2 class="nk-section-title">
+                                    We are trusted by 5k+ clients. <br class="d-none d-lg-block" />
+                                    Join them to grow your business.
+                                </h2>
+                                <p>
+                                    Connect with our team to discuss technology solutions, defence training systems, and
+                                    long-term engineering support tailored to your requirements.
+                                </p>
+                            </div>
+                            <div class="about-cta-actions" data-aos="fade-up" data-aos-delay="80">
+                                <a href="../contact/default.html" class="btn btn-primary">Get In Touch</a>
                             </div>
                         </div>
                     </div>
@@ -410,6 +1300,31 @@
                 class="icon ni ni-chevrons-up"></em></a>
 
     </div>
+    <script>
+        (() => {
+            const items = document.querySelectorAll(".dc-reveal");
+            if (!items.length) return;
+
+            if (!("IntersectionObserver" in window)) {
+                items.forEach((item) => item.classList.add("is-visible"));
+                return;
+            }
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("is-visible");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.12 });
+
+            items.forEach((item, index) => {
+                item.style.transitionDelay = `${Math.min(index * 45, 240)}ms`;
+                observer.observe(item);
+            });
+        })();
+    </script>
     <script src="../assets/js/bundle.js?v1.5.0"></script>
     <script src="../assets/js/scripts.js?v1.5.0"></script>
 </body>
